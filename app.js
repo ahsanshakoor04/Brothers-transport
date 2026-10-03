@@ -209,6 +209,7 @@ const DEFAULT_AGENTS = [
 
 class AppState {
     constructor() {
+        this.config = typeof APP_CONFIG !== 'undefined' ? APP_CONFIG : {};
         this.properties = this.loadFromStorage('ahsan_properties', DEFAULT_PROPERTIES);
         this.favorites = this.loadFromStorage('ahsan_favorites', []);
         this.compareList = this.loadFromStorage('ahsan_compare', []);

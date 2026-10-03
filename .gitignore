@@ -1,0 +1,12 @@
+# Private keys and config
+config.js
+.env
+
+# Dependencies & Logs
+node_modules/
+*.log
+
+# OS & Editor files
+.DS_Store
+.vscode/
+.idea/
