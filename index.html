@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahsan Real Estate | Luxury Apartments & Modern Flats in Lahore</title>
+    <meta name="description" content="Discover premium modern apartments and flats for sale and rent in Lahore, Pakistan. Expert real estate advisory by Ahsan. Located in Chungi Amar Sidhu, Lahore.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Leaflet.js CSS for Interactive Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+
+    <!-- Chart.js for Mortgage Breakdown -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Navigation Bar -->
+    <header class="navbar-header" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="brand-logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-building-user"></i>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">AHSAN</span>
+                    <span class="brand-tagline">REAL ESTATE • LAHORE</span>
+                </div>
+            </a>
+
+            <!-- Mobile Hamburger Toggle -->
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- Nav Links -->
+            <nav class="nav-menu" id="nav-menu">
+                <ul class="nav-list">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#properties" class="nav-link">Properties</a></li>
+                    <li><a href="#services" class="nav-link">Services</a></li>
+                    <li><a href="#calculator" class="nav-link">Mortgage</a></li>
+                    <li><a href="#agents" class="nav-link">Agents</a></li>
+                    <li><a href="#about" class="nav-link">About Us</a></li>
+                    <li><a href="#location" class="nav-link">Location</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+                
+                <div class="nav-actions">
+                    <button class="nav-utility-btn" id="open-favorites-btn" title="Saved Properties">
+                        <i class="fa-solid fa-heart"></i>
+                        <span class="badge" id="fav-count-badge">0</span>
+                    </button>
+                    <button class="nav-utility-btn" id="open-compare-btn" title="Compare Properties">
+                        <i class="fa-solid fa-code-compare"></i>
+                        <span class="badge" id="compare-count-badge">0</span>
+                    </button>
+                    <button class="nav-admin-btn" id="open-admin-btn" title="Admin Portal">
+                        <i class="fa-solid fa-user-gear"></i> Admin Portal
+                    </button>
+                    <a href="#properties" class="btn btn-gold btn-nav-cta">
+                        <i class="fa-solid fa-magnifying-glass"></i> Find Property
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-overlay"></div>
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="fa-solid fa-award"></i> Premier Real Estate Advisor in Lahore
+                    </div>
+                    <h1 class="hero-title">Find Your Dream Home</h1>
+                    <p class="hero-subtitle">
+                        Discover modern apartments and flats in Lahore that match your lifestyle, location, and budget.
+                    </p>
+                    <div class="hero-btn-group">
+                        <a href="#properties" class="btn btn-gold btn-lg">
+                            <i class="fa-solid fa-building"></i> Explore Properties
+                        </a>
+                        <a href="#contact" class="btn btn-outline-light btn-lg">
+                            <i class="fa-solid fa-paper-plane"></i> Contact Us
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Property Search Box -->
+                <div class="hero-search-wrapper">
+                    <form id="hero-search-form" class="hero-search-box">
+                        <div class="search-form-row">
+                            <div class="search-field">
+                                <label><i class="fa-solid fa-location-dot"></i> Location</label>
+                                <select id="hero-location" class="form-select">
+                                    <option value="">All Locations in Lahore</option>
+                                    <option value="DHA Lahore">DHA Lahore</option>
+                                    <option value="Gulberg">Gulberg</option>
+                                    <option value="Bahria Town">Bahria Town</option>
+                                    <option value="Johar Town">Johar Town</option>
+                                    <option value="Model Town">Model Town</option>
+                                    <option value="Chungi Amar Sidhu">Chungi Amar Sidhu</option>
+                                </select>
+                            </div>
+
+                            <div class="search-field">
+                                <label><i class="fa-solid fa-money-bill-wave"></i> Price Range</label>
+                                <select id="hero-price" class="form-select">
+                                    <option value="">Any Price Range</option>
+                                    <option value="0-10000000">Under PKR 1 Crore</option>
+                                    <option value="10000000-20000000">PKR 1 Crore - 2 Crore</option>
+                                    <option value="20000000-40000000">PKR 2 Crore - 4 Crore</option>
+                                    <option value="40000000-100000000">PKR 4 Crore+</option>
+                                    <option value="rent-under-1lac">Rent: Under 1 Lac/mo</option>
+                                    <option value="rent-above-1lac">Rent: Above 1 Lac/mo</option>
+                                </select>
+                            </div>
+
+                            <div class="search-field">
+                                <label><i class="fa-solid fa-house"></i> Property Type</label>
+                                <select id="hero-type" class="form-select">
+                                    <option value="">All Types</option>
+                                    <option value="Apartment">Modern Apartment</option>
+                                    <option value="Flat">Executive Flat</option>
+                                    <option value="Penthouse">Luxury Penthouse</option>
+                                    <option value="Studio">Studio Flat</option>
+                                    <option value="Duplex">Duplex Apartment</option>
+                                </select>
+                            </div>
+
+                            <div class="search-field">
+                                <label><i class="fa-solid fa-bed"></i> Bedrooms</label>
+                                <select id="hero-beds" class="form-select">
+                                    <option value="">Any Beds</option>
+                                    <option value="1">1 Bedroom</option>
+                                    <option value="2">2 Bedrooms</option>
+                                    <option value="3">3 Bedrooms</option>
+                                    <option value="4">4+ Bedrooms</option>
+                                </select>
+                            </div>
+
+                            <div class="search-field search-field-submit">
+                                <label>&nbsp;</label>
+                                <button type="submit" class="btn btn-gold btn-block">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Search Property
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured & All Properties Section -->
+        <section id="properties" class="properties-section section-padding">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="sub-title"><i class="fa-solid fa-city"></i> Lahore Apartment Portfolio</span>
+                    <h2 class="section-title">Featured Apartments & Modern Flats</h2>
+                    <p class="section-desc">
+                        Browse top-tier residential listings across DHA, Gulberg, Bahria Town, Model Town, Johar Town, and Chungi Amar Sidhu, Lahore.
+                    </p>
+                </div>
+
+                <!-- Comprehensive Search & Filter Interface -->
+                <div class="filter-panel">
+                    <div class="filter-top-bar">
+                        <div class="search-input-wrapper">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" id="filter-keyword" class="form-control" placeholder="Search by title, features or keyword...">
+                        </div>
+
+                        <div class="purpose-toggle-group">
+                            <button type="button" class="purpose-btn active" data-purpose="all">All Status</button>
+                            <button type="button" class="purpose-btn" data-purpose="Sale">For Sale</button>
+                            <button type="button" class="purpose-btn" data-purpose="Rent">For Rent</button>
+                        </div>
+
+                        <div class="sort-wrapper">
+                            <label for="filter-sort"><i class="fa-solid fa-sort"></i> Sort By:</label>
+                            <select id="filter-sort" class="form-select-sm">
+                                <option value="newest">Newest First</option>
+                                <option value="price-asc">Price: Low to High</option>
+                                <option value="price-desc">Price: High to Low</option>
+                                <option value="area-desc">Area: Largest First</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="filter-grid">
+                        <div class="filter-control">
+                            <label for="filter-location">Location</label>
+                            <select id="filter-location" class="form-select">
+                                <option value="">All Locations</option>
+                                <option value="DHA Lahore">DHA Lahore</option>
+                                <option value="Gulberg">Gulberg</option>
+                                <option value="Bahria Town">Bahria Town</option>
+                                <option value="Johar Town">Johar Town</option>
+                                <option value="Model Town">Model Town</option>
+                                <option value="Chungi Amar Sidhu">Chungi Amar Sidhu</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-control">
+                            <label for="filter-type">Property Type</label>
+                            <select id="filter-type" class="form-select">
+                                <option value="">All Types</option>
+                                <option value="Apartment">Apartment</option>
+                                <option value="Flat">Flat</option>
+                                <option value="Penthouse">Penthouse</option>
+                                <option value="Studio">Studio</option>
+                                <option value="Duplex">Duplex</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-control">
+                            <label for="filter-beds">Bedrooms</label>
+                            <select id="filter-beds" class="form-select">
+                                <option value="">Any Beds</option>
+                                <option value="1">1+ Bed</option>
+                                <option value="2">2+ Beds</option>
+                                <option value="3">3+ Beds</option>
+                                <option value="4">4+ Beds</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-control">
+                            <label for="filter-baths">Bathrooms</label>
+                            <select id="filter-baths" class="form-select">
+                                <option value="">Any Baths</option>
+                                <option value="1">1+ Bath</option>
+                                <option value="2">2+ Baths</option>
+                                <option value="3">3+ Baths</option>
+                                <option value="4">4+ Baths</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-control filter-reset-control">
+                            <button type="button" id="clear-filters-btn" class="btn btn-outline-navy btn-block">
+                                <i class="fa-solid fa-rotate-left"></i> Reset Filters
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="demo-notice-bar">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span><strong>Demo Note:</strong> Listings marked as "Demo / Sample Listing" are illustrative properties for demonstration purposes until live inventory is added.</span>
+                    </div>
+                </div>
+
+                <!-- Active Filter Stats & Grid View -->
+                <div class="results-header">
+                    <div class="results-count">
+                        Showing <span id="property-count-num">0</span> properties found in Lahore
+                    </div>
+                </div>
+
+                <!-- Property Grid -->
+                <div id="property-grid" class="property-grid">
+                    <!-- Dynamic rendering via app.js -->
+                </div>
+
+                <!-- Empty Search Fallback -->
+                <div id="no-results-box" class="no-results-box hidden">
+                    <i class="fa-solid fa-building-circle-xmark"></i>
+                    <h3>No Matching Properties Found</h3>
+                    <p>Try adjusting your search criteria or resetting filters to see more Lahore apartments.</p>
+                    <button id="reset-search-btn" class="btn btn-gold"><i class="fa-solid fa-rotate"></i> Reset All Filters</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Services Section -->
+        <section id="services" class="services-section section-padding bg-light">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="sub-title"><i class="fa-solid fa-handshake-angle"></i> Professional Real Estate Services</span>
+                    <h2 class="section-title">What We Do For You</h2>
+                    <p class="section-desc">
+                        Comprehensive real estate solutions tailored for buyers, tenants, landlords, and investors across Lahore.
+                    </p>
+                </div>
+
+                <div class="services-grid">
+                    <!-- Service 1 -->
+                    <div class="service-card">
+                        <div class="service-icon-box">
+                            <i class="fa-solid fa-house-circle-check"></i>
+                        </div>
+                        <h3 class="service-title">Property Sale</h3>
+                        <p class="service-desc">
+                            Help customers find suitable apartments and flats for purchase. We handle strategic pricing, high-end photography, and negotiation for fast, optimal sales in Lahore.
+                        </p>
+                        <a href="#contact" class="service-link">Consult Sale <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="service-card">
+                        <div class="service-icon-box">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <h3 class="service-title">Property Rent</h3>
+                        <p class="service-desc">
+                            Help customers find apartments and flats for rent. Seamless leasing for corporate executives, families, and individuals seeking luxury rentals in prime Lahore neighborhoods.
+                        </p>
+                        <a href="#contact" class="service-link">Find Rentals <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="service-card">
+                        <div class="service-icon-box">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                        <h3 class="service-title">Property Buying</h3>
+                        <p class="service-desc">
+                            Assist customers throughout the property-buying process. From document verification and title search to transfer execution in LDA, DHA, or private societies.
+                        </p>
+                        <a href="#contact" class="service-link">Buyer Assistance <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Service 4 -->
+                    <div class="service-card">
+                        <div class="service-icon-box">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h3 class="service-title">Property Investment</h3>
+                        <p class="service-desc">
+                            Provide property investment information and assistance. Data-driven ROI analysis on high-yield apartment complexes and upcoming residential towers in Lahore.
+                        </p>
+                        <a href="#contact" class="service-link">Explore Advisory <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Service 5 -->
+                    <div class="service-card">
+                        <div class="service-icon-box">
+                            <i class="fa-solid fa-city"></i>
+                        </div>
+                        <h3 class="service-title">Property Management</h3>
+                        <p class="service-desc">
+                            Offer property management support for property owners. Tenant vetting, routine maintenance, lease renewal, and monthly rental collection hassle-free.
+                        </p>
+                        <a href="#contact" class="service-link">Manage Property <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mortgage / Property Financing Calculator Section -->
+        <section id="calculator" class="calculator-section section-padding">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="sub-title"><i class="fa-solid fa-calculator"></i> Financial Planning</span>
+                    <h2 class="section-title">Property Financing Calculator</h2>
+                    <p class="section-desc">
+                        Estimate your monthly mortgage or bank installment payments for purchasing an apartment in Lahore.
+                    </p>
+                </div>
+
+                <div class="calculator-card">
+                    <div class="calculator-grid">
+                        <!-- Inputs Column -->
+                        <div class="calc-inputs-col">
+                            <h3 class="calc-box-title"><i class="fa-solid fa-sliders"></i> Loan Parameters</h3>
+                            
+                            <div class="calc-group">
+                                <label for="calc-price">Property Price (PKR): <strong id="calc-price-val">PKR 20,000,000</strong></label>
+                                <input type="range" id="calc-price" min="3000000" max="100000000" step="500000" value="20000000" class="calc-slider">
+                                <input type="number" id="calc-price-num" value="20000000" class="form-control mt-2">
+                            </div>
+
+                            <div class="calc-group">
+                                <label for="calc-down-percent">Down Payment (%): <strong id="calc-down-val">25% (PKR 5,000,000)</strong></label>
+                                <input type="range" id="calc-down-percent" min="10" max="70" step="5" value="25" class="calc-slider">
+                            </div>
+
+                            <div class="calc-group">
+                                <label for="calc-interest">Interest / Markup Rate (% per year): <strong id="calc-interest-val">12.5%</strong></label>
+                                <input type="range" id="calc-interest" min="5" max="25" step="0.5" value="12.5" class="calc-slider">
+                            </div>
+
+                            <div class="calc-group">
+                                <label for="calc-years">Loan Duration (Years): <strong id="calc-years-val">15 Years</strong></label>
+                                <select id="calc-years" class="form-select">
+                                    <option value="5">5 Years</option>
+                                    <option value="10">10 Years</option>
+                                    <option value="15" selected>15 Years</option>
+                                    <option value="20">20 Years</option>
+                                    <option value="25">25 Years</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Output Column -->
+                        <div class="calc-results-col">
+                            <h3 class="calc-box-title"><i class="fa-solid fa-chart-pie"></i> Payment Breakdown</h3>
+                            
+                            <div class="calc-result-hero">
+                                <span class="calc-hero-label">Estimated Monthly Payment</span>
+                                <div class="calc-hero-amount" id="calc-monthly-emi">PKR 180,032 / mo</div>
+                                <span class="calc-disclaimer-tag">* Informational estimate only, not binding financial advice</span>
+                            </div>
+
+                            <div class="calc-details-list">
+                                <div class="calc-detail-row">
+                                    <span>Loan Principal Amount:</span>
+                                    <strong id="calc-loan-principal">PKR 15,000,000</strong>
+                                </div>
+                                <div class="calc-detail-row">
+                                    <span>Down Payment Paid:</span>
+                                    <strong id="calc-down-amount">PKR 5,000,000</strong>
+                                </div>
+                                <div class="calc-detail-row">
+                                    <span>Total Estimated Interest:</span>
+                                    <strong id="calc-total-interest">PKR 17,405,760</strong>
+                                </div>
+                                <div class="calc-detail-row highlight-row">
+                                    <span>Total Outflow Over Tenure:</span>
+                                    <strong id="calc-total-payable">PKR 32,405,760</strong>
+                                </div>
+                            </div>
+
+                            <div class="calc-chart-container">
+                                <canvas id="mortgageChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Agents Section -->
+        <section id="agents" class="agents-section section-padding bg-light">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="sub-title"><i class="fa-solid fa-users-gear"></i> Expert Consultants</span>
+                    <h2 class="section-title">Meet Our Real Estate Agents</h2>
+                    <p class="section-desc">
+                        Dedicated, trustworthy advisors ready to guide you through buying, selling, or renting apartments in Lahore.
+                    </p>
+                </div>
+
+                <div class="agents-grid" id="agents-grid">
+                    <!-- Agent cards generated dynamically in app.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="about-section section-padding">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-image-col">
+                        <div class="about-img-wrapper">
+                            <img src="assets/images/hero_bg.jpg" alt="Ahsan Real Estate Lahore" class="about-img-main">
+                            <div class="about-experience-badge">
+                                <span class="exp-num">10+</span>
+                                <span class="exp-text">Years Excellence<br>in Lahore</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about-content-col">
+                        <span class="sub-title"><i class="fa-solid fa-shield-halved"></i> About Ahsan</span>
+                        <h2 class="about-title">Helping You Find the Right Place to Call Home</h2>
+                        <p class="about-lead">
+                            Ahsan is a Lahore-based real estate business focused on helping customers discover apartments and flats for sale and rent with total clarity and trust.
+                        </p>
+                        <p class="about-text">
+                            Whether you are searching for a high-yield investment in DHA Lahore, a chic executive flat in Gulberg, a family apartment in Bahria Town, or an affordable home in Chungi Amar Sidhu, Ahsan provides tailored, professional guidance every step of the way.
+                        </p>
+
+                        <div class="about-features-list">
+                            <div class="about-feature-item">
+                                <div class="af-icon"><i class="fa-solid fa-user-check"></i></div>
+                                <div class="af-text">
+                                    <h4>Customer-Focused Approach</h4>
+                                    <p>We prioritize your exact lifestyle requirements, budget constraints, and timeline.</p>
+                                </div>
+                            </div>
+
+                            <div class="about-feature-item">
+                                <div class="af-icon"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+                                <div class="af-text">
+                                    <h4>Property Search Assistance</h4>
+                                    <p>Comprehensive verified apartment options across all key sectors of Lahore.</p>
+                                </div>
+                            </div>
+
+                            <div class="about-feature-item">
+                                <div class="af-icon"><i class="fa-solid fa-file-contract"></i></div>
+                                <div class="af-text">
+                                    <h4>Buying, Renting & Investment</h4>
+                                    <p>End-to-end support including legal verification, fair price negotiation, and transfer assistance.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="about-cta-row">
+                            <a href="#properties" class="btn btn-gold">
+                                Learn More <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                            <a href="https://wa.me/923207843805" target="_blank" class="btn btn-whatsapp-direct">
+                                <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Location Section -->
+        <section id="location" class="location-section section-padding bg-light">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="sub-title"><i class="fa-solid fa-map-location-dot"></i> Visit Our Office</span>
+                    <h2 class="section-title">Our Office Location</h2>
+                    <p class="section-desc">
+                        Visit our main office in Chungi Amar Sidhu, Lahore, Pakistan for face-to-face property consultation.
+                    </p>
+                </div>
+
+                <div class="location-card">
+                    <div class="location-grid">
+                        <div class="location-info-col">
+                            <div class="loc-badge"><i class="fa-solid fa-building-shield"></i> Main Branch</div>
+                            <h3 class="loc-office-title">Ahsan Real Estate Headquarters</h3>
+                            <p class="loc-address">
+                                <i class="fa-solid fa-location-dot"></i> Main Ferozepur Road, Chungi Amar Sidhu, Lahore, Pakistan
+                            </p>
+
+                            <ul class="loc-details-list">
+                                <li><strong><i class="fa-solid fa-city"></i> City:</strong> Lahore, Punjab, Pakistan</li>
+                                <li><strong><i class="fa-solid fa-phone"></i> Direct Call:</strong> <a href="tel:03207843805">03207843805</a></li>
+                                <li><strong><i class="fa-solid fa-envelope"></i> Email:</strong> <a href="mailto:ahsanshakoor04@gmail.com">ahsanshakoor04@gmail.com</a></li>
+                                <li><strong><i class="fa-solid fa-clock"></i> Working Hours:</strong> Monday - Saturday (9:00 AM - 8:00 PM)</li>
+                            </ul>
+
+                            <div class="loc-actions">
+                                <a href="https://www.google.com/maps/dir/?api=1&destination=Chungi+Amar+Sidhu+Lahore+Pakistan" target="_blank" class="btn btn-gold">
+                                    <i class="fa-solid fa-diamond-turn-right"></i> Get Directions
+                                </a>
+                                <a href="tel:03207843805" class="btn btn-outline-navy">
+                                    <i class="fa-solid fa-phone"></i> Call Office
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="location-map-col">
+                            <div id="office-map" class="map-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section section-padding">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="sub-title"><i class="fa-solid fa-comments"></i> Get In Touch</span>
+                    <h2 class="section-title">Contact Ahsan Real Estate</h2>
+                    <p class="section-desc">
+                        Have a question about an apartment listing or looking to buy/rent in Lahore? Send us a message today.
+                    </p>
+                </div>
+
+                <div class="contact-grid">
+                    <!-- Left: Contact Info -->
+                    <div class="contact-info-card">
+                        <h3 class="contact-card-title">Contact Information</h3>
+                        <p class="contact-card-text">
+                            Reach out directly through phone, email, or WhatsApp. Our Lahore real estate advisors are ready to assist.
+                        </p>
+
+                        <div class="info-blocks-list">
+                            <div class="info-block">
+                                <div class="ib-icon"><i class="fa-solid fa-phone-flip"></i></div>
+                                <div class="ib-content">
+                                    <span class="ib-label">Phone Number</span>
+                                    <a href="tel:03207843805" class="ib-val">03207843805</a>
+                                </div>
+                            </div>
+
+                            <div class="info-block">
+                                <div class="ib-icon"><i class="fa-solid fa-envelope"></i></div>
+                                <div class="ib-content">
+                                    <span class="ib-label">Email Address</span>
+                                    <a href="mailto:ahsanshakoor04@gmail.com" class="ib-val">ahsanshakoor04@gmail.com</a>
+                                </div>
+                            </div>
+
+                            <div class="info-block">
+                                <div class="ib-icon"><i class="fa-solid fa-location-dot"></i></div>
+                                <div class="ib-content">
+                                    <span class="ib-label">Office Address</span>
+                                    <span class="ib-val">Chungi Amar Sidhu, Lahore, Pakistan</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-quick-btns">
+                            <a href="tel:03207843805" class="btn btn-call-direct">
+                                <i class="fa-solid fa-phone"></i> Call Now
+                            </a>
+                            <a href="https://wa.me/923207843805?text=Hello%20Ahsan,%20I%20am%20interested%20in%20a%20property%20listed%20on%20your%20website.%20Please%20provide%20more%20details." target="_blank" class="btn btn-whatsapp-direct">
+                                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                            </a>
+                            <a href="mailto:ahsanshakoor04@gmail.com" class="btn btn-email-direct">
+                                <i class="fa-solid fa-envelope"></i> Email Us
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right: Contact Form -->
+                    <div class="contact-form-card">
+                        <h3 class="contact-card-title">Send Us an Inquiry</h3>
+                        <form id="contact-form" class="contact-form">
+                            <div class="form-group">
+                                <label for="contact-name">Full Name <span class="required">*</span></label>
+                                <input type="text" id="contact-name" class="form-control" placeholder="Enter your full name" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contact-phone">Phone Number <span class="required">*</span></label>
+                                    <input type="tel" id="contact-phone" class="form-control" placeholder="03XXXXXXXXX" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="contact-email">Email Address <span class="required">*</span></label>
+                                    <input type="email" id="contact-email" class="form-control" placeholder="name@example.com" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contact-property">Interested Property / Location</label>
+                                <select id="contact-property" class="form-select">
+                                    <option value="General Inquiry">General Real Estate Inquiry</option>
+                                    <option value="DHA Lahore Apartments">DHA Lahore Apartments</option>
+                                    <option value="Gulberg Modern Flats">Gulberg Modern Flats</option>
+                                    <option value="Bahria Town Apartments">Bahria Town Apartments</option>
+                                    <option value="Johar Town / Model Town Flats">Johar Town / Model Town Flats</option>
+                                    <option value="Chungi Amar Sidhu Properties">Chungi Amar Sidhu Properties</option>
+                                    <option value="Rental Flat Request">Rental Flat Request</option>
+                                    <option value="Property Selling / Listing Request">I Want to Sell/List My Property</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contact-message">Message <span class="required">*</span></label>
+                                <textarea id="contact-message" class="form-control" rows="4" placeholder="Tell us about your requirements (budget, beds, preferred location, etc.)..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-gold btn-block btn-lg" id="contact-submit-btn">
+                                <i class="fa-solid fa-paper-plane"></i> Send Inquiry
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Floating WhatsApp Integration Button -->
+    <a href="https://wa.me/923207843805?text=Hello%20Ahsan,%20I%20am%20interested%20in%20a%20property%20listed%20on%20your%20website.%20Please%20provide%20more%20details." 
+       target="_blank" class="whatsapp-float" id="whatsapp-float-btn" title="Chat with Ahsan on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span class="wa-tooltip">Chat with Ahsan</span>
+    </a>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Col 1: Brand -->
+                <div class="footer-col brand-col">
+                    <div class="brand-logo footer-logo">
+                        <div class="logo-icon"><i class="fa-solid fa-building-user"></i></div>
+                        <div class="brand-text">
+                            <span class="brand-name">AHSAN</span>
+                            <span class="brand-tagline">REAL ESTATE • LAHORE</span>
+                        </div>
+                    </div>
+                    <p class="footer-desc">
+                        Your trusted destination for finding apartments and flats in Lahore. Delivering luxury living and high-return property investments with transparent guidance.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://wa.me/923207843805" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home"><i class="fa-solid fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#properties"><i class="fa-solid fa-chevron-right"></i> Properties</a></li>
+                        <li><a href="#services"><i class="fa-solid fa-chevron-right"></i> Services</a></li>
+                        <li><a href="#calculator"><i class="fa-solid fa-chevron-right"></i> Mortgage Calculator</a></li>
+                        <li><a href="#agents"><i class="fa-solid fa-chevron-right"></i> Agents</a></li>
+                        <li><a href="#about"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="#contact"><i class="fa-solid fa-chevron-right"></i> Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Lahore Locations -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Popular Lahore Areas</h4>
+                    <ul class="footer-links">
+                        <li><a href="#properties" class="area-filter-link" data-area="DHA Lahore"><i class="fa-solid fa-location-dot"></i> DHA Lahore</a></li>
+                        <li><a href="#properties" class="area-filter-link" data-area="Gulberg"><i class="fa-solid fa-location-dot"></i> Gulberg III</a></li>
+                        <li><a href="#properties" class="area-filter-link" data-area="Bahria Town"><i class="fa-solid fa-location-dot"></i> Bahria Town Lahore</a></li>
+                        <li><a href="#properties" class="area-filter-link" data-area="Johar Town"><i class="fa-solid fa-location-dot"></i> Johar Town</a></li>
+                        <li><a href="#properties" class="area-filter-link" data-area="Model Town"><i class="fa-solid fa-location-dot"></i> Model Town</a></li>
+                        <li><a href="#properties" class="area-filter-link" data-area="Chungi Amar Sidhu"><i class="fa-solid fa-location-dot"></i> Chungi Amar Sidhu</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Contact Info -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Contact Us</h4>
+                    <ul class="footer-contact-list">
+                        <li>
+                            <i class="fa-solid fa-phone"></i>
+                            <a href="tel:03207843805">03207843805</a>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-envelope"></i>
+                            <a href="mailto:ahsanshakoor04@gmail.com">ahsanshakoor04@gmail.com</a>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>Chungi Amar Sidhu, Lahore, Pakistan</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Ahsan. All Rights Reserved. | Modern Real Estate Website</p>
+                <div class="footer-bottom-links">
+                    <a href="#open-admin-btn" id="footer-admin-link"><i class="fa-solid fa-lock"></i> Admin Portal</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: Property Details Modal -->
+    <div id="property-modal" class="modal-backdrop hidden">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <button class="modal-close" id="close-prop-modal">&times;</button>
+                <div id="prop-modal-body" class="modal-body">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Saved Properties / Favorites Drawer -->
+    <div id="favorites-drawer" class="drawer-backdrop hidden">
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h3><i class="fa-solid fa-heart text-gold"></i> Saved Properties</h3>
+                <button class="drawer-close" id="close-fav-drawer">&times;</button>
+            </div>
+            <div id="favorites-list" class="drawer-body">
+                <!-- Dynamic list -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Property Comparison Modal -->
+    <div id="compare-modal" class="modal-backdrop hidden">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fa-solid fa-code-compare text-gold"></i> Property Comparison Matrix</h3>
+                    <button class="modal-close" id="close-compare-modal">&times;</button>
+                </div>
+                <div id="compare-modal-body" class="modal-body">
+                    <!-- Dynamic comparison table -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: Admin / Property Management Portal -->
+    <div id="admin-modal" class="modal-backdrop hidden">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header admin-modal-header">
+                    <div>
+                        <h3><i class="fa-solid fa-user-gear text-gold"></i> Ahsan Property Management Admin</h3>
+                        <span class="sub-text">Add, edit, or delete listings and view customer inquiries</span>
+                    </div>
+                    <button class="modal-close" id="close-admin-modal">&times;</button>
+                </div>
+                <div class="modal-body admin-modal-body">
+                    <!-- Admin Tabs -->
+                    <div class="admin-tabs">
+                        <button class="admin-tab-btn active" data-tab="admin-add-prop"><i class="fa-solid fa-plus-circle"></i> Add New Property</button>
+                        <button class="admin-tab-btn" data-tab="admin-list-props"><i class="fa-solid fa-list-check"></i> Manage Listings (<span id="admin-prop-count">0</span>)</button>
+                        <button class="admin-tab-btn" data-tab="admin-inquiries"><i class="fa-solid fa-envelope-open-text"></i> Customer Inquiries (<span id="admin-inquiry-count">0</span>)</button>
+                    </div>
+
+                    <!-- Tab 1: Add Property Form -->
+                    <div id="admin-add-prop" class="admin-tab-content active">
+                        <form id="admin-property-form" class="admin-form">
+                            <input type="hidden" id="admin-edit-id" value="">
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <label for="admin-title">Property Title <span class="required">*</span></label>
+                                    <input type="text" id="admin-title" class="form-control" placeholder="e.g. Executive 3-Bed Apartment in DHA Phase 6" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="admin-price">Price (PKR) <span class="required">*</span></label>
+                                    <input type="number" id="admin-price" class="form-control" placeholder="e.g. 25000000" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="admin-location">Location <span class="required">*</span></label>
+                                    <select id="admin-location" class="form-select" required>
+                                        <option value="DHA Lahore">DHA Lahore</option>
+                                        <option value="Gulberg">Gulberg</option>
+                                        <option value="Bahria Town">Bahria Town</option>
+                                        <option value="Johar Town">Johar Town</option>
+                                        <option value="Model Town">Model Town</option>
+                                        <option value="Chungi Amar Sidhu">Chungi Amar Sidhu</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="admin-type">Property Type <span class="required">*</span></label>
+                                    <select id="admin-type" class="form-select" required>
+                                        <option value="Apartment">Apartment</option>
+                                        <option value="Flat">Flat</option>
+                                        <option value="Penthouse">Penthouse</option>
+                                        <option value="Studio">Studio</option>
+                                        <option value="Duplex">Duplex</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="admin-purpose">Sale / Rent <span class="required">*</span></label>
+                                    <select id="admin-purpose" class="form-select" required>
+                                        <option value="Sale">Sale</option>
+                                        <option value="Rent">Rent</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="admin-beds">Bedrooms <span class="required">*</span></label>
+                                    <input type="number" id="admin-beds" class="form-control" min="1" max="10" value="2" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="admin-baths">Bathrooms <span class="required">*</span></label>
+                                    <input type="number" id="admin-baths" class="form-control" min="1" max="10" value="2" required>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="admin-area">Area (Sq Ft) <span class="required">*</span></label>
+                                    <input type="number" id="admin-area" class="form-control" placeholder="e.g. 1500" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="admin-image">Property Image URL / Path <span class="required">*</span></label>
+                                <input type="text" id="admin-image" class="form-control" placeholder="assets/images/apt_dha.jpg or image link" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="admin-desc">Property Description</label>
+                                <textarea id="admin-desc" class="form-control" rows="3" placeholder="Provide full property details, floor level, fittings, security features..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Key Amenities (Select all that apply)</label>
+                                <div class="amenities-checkbox-grid">
+                                    <label><input type="checkbox" value="Elevator" checked> Elevator / Lift</label>
+                                    <label><input type="checkbox" value="24/7 Security" checked> 24/7 CCTV & Security</label>
+                                    <label><input type="checkbox" value="Backup Generator" checked> Backup Generator</label>
+                                    <label><input type="checkbox" value="Reserved Parking" checked> Reserved Parking</label>
+                                    <label><input type="checkbox" value="Balcony" checked> Terrace Balcony</label>
+                                    <label><input type="checkbox" value="Central Heating/AC"> Central Heating / AC</label>
+                                    <label><input type="checkbox" value="Gym & Fitness"> Gym & Fitness Center</label>
+                                    <label><input type="checkbox" value="Rooftop Garden"> Rooftop Garden</label>
+                                </div>
+                            </div>
+
+                            <div class="form-row align-items-center">
+                                <div class="form-group col-md-6">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="admin-featured" checked> Mark as Featured Property
+                                    </label>
+                                </div>
+                                <div class="form-group col-md-6 text-right">
+                                    <button type="submit" class="btn btn-gold btn-lg" id="admin-save-btn">
+                                        <i class="fa-solid fa-floppy-disk"></i> Save Property Listing
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Tab 2: Manage Existing Listings -->
+                    <div id="admin-list-props" class="admin-tab-content">
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Title</th>
+                                        <th>Location</th>
+                                        <th>Price</th>
+                                        <th>Type</th>
+                                        <th>Beds/Baths</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-props-tbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: View Inquiries -->
+                    <div id="admin-inquiries" class="admin-tab-content">
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Property Interest</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-inquiries-tbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS Map Script -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <!-- Custom Application JS -->
+    <script src="app.js"></script>
+</body>
+</html>
